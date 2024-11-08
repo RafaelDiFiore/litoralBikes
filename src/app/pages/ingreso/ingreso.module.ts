@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ArmarioPageRoutingModule } from './armario-routing.module';
+import { IngresoPageRoutingModule } from './ingreso-routing.module';
 
-import { ArmarioPage } from './armario.page';
+import { IngresoPage } from './ingreso.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ArmarioPageRoutingModule
+    IngresoPageRoutingModule
   ],
-  declarations: [ArmarioPage]
+  declarations: [IngresoPage]
 })
-export class ArmarioPageModule {}
+export class IngresoPageModule {}

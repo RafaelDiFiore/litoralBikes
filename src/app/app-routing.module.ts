@@ -52,10 +52,10 @@ const routes: Routes = [
       path: 'perfil',
       loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule)
     },
-    //PAGINA DE ARCHIVOS( TABLEROS/ARMARIOS DE ROPA)
+
     {
-      path: 'armario',
-      loadChildren: () => import('./pages/armario/armario.module').then( m => m.ArmarioPageModule)
+      path: 'ingreso',
+      loadChildren: () => import('./pages/ingreso/ingreso.module').then( m => m.IngresoPageModule)
     },
     {
       path: 'carga',
@@ -63,13 +63,14 @@ const routes: Routes = [
     },
     
   ],
-  },
+  }, 
   //PAGINA NOT FOUND / ERROR 404
   {
     path: '**',
     component: BarraComponent,
     loadChildren: () => import('./pages/not-found/not-found.module').then( m => m.NotFoundPageModule)
   },
+  
   
 
 
