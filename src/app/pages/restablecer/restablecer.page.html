@@ -1,0 +1,34 @@
+<ion-content>
+  <img class="img_logo" src="assets/img/Logo.png" alt="">
+  <ion-list>
+    <ion-item lines="none">
+      <ion-label>Recupera tu cuenta</ion-label>
+    </ion-item>
+    <ion-list lines="none">
+      <ion-item>
+        <p>Introduce tu correo electrónico para buscar tu cuenta.</p>
+      </ion-item>
+      
+      <ion-item>
+        <ion-input lines="none"
+        class="custom ion-margin-top"
+        type="email"
+        label="Email" 
+        label-placement="floating"
+        fill="solid"
+        helperText="ingrese un correo valido"
+        errorText="correo invalido"
+        placeholder="Ingrese su correo"
+        [(ngModel)]="email" 
+        email
+        ></ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-button [disabled]="desabilitarBtn()" (click)="resetPassword()" expand="block" fill="solid" shape="round">
+      Restablecer
+    </ion-button>
+    <ion-button [routerLink]="['/login']" expand="block" fill="solid" shape="round">
+      Cancelar
+    </ion-button>
+  </ion-list>
+</ion-content>

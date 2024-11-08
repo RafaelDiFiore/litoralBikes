@@ -1,0 +1,90 @@
+
+ion-content::part(background) {
+  background: #fefefe;
+}
+
+
+ion-toolbar {
+  --background: #F9FFB1;
+  --min-height: 56px;
+  --opacity: 1;
+  --padding-bottom: 0px;
+  --padding-end: 5px;
+  --padding-start: 5px;
+  --padding-top: 5px;
+}
+
+ion-col {
+  height: 57px;
+  width: 17px;
+  display: flex;
+  justify-content: center;
+  color: #000000;
+  align-items: center;
+}
+
+// Estilo del input de archivo
+input[type="file"] {
+  display: block;
+  margin: 15px auto;
+  border: 2px dashed;
+  border-radius: 5px;
+  padding: 10px;
+  width: 90%;
+  transition: border-color 0.3s;
+
+  &:hover {
+    border-color: darken 10%;
+  }
+}
+
+// Estilo del botón
+ion-button {
+  background-color: whitesmoke;
+  color: pink;
+  margin: 15px auto;
+  display: block;
+  width: 90%;
+  
+  &:hover {
+    background-color: darken 10% whitesmoke;
+  }
+}
+
+//Diseño titulo home
+ion-card-subtitle {
+  background-color: #fefefe;
+  text-align: center;
+  font-family: 'Times New Roman';
+  font-size: medium;
+  padding-top: 5%;
+  padding-bottom: 2%;
+
+}
+
+// Diseño Swiper:
+swiper-container {
+  background-color: rgb(253, 249, 244);
+  width: 80%;
+  height: 169px;
+  padding-top: 5%;
+
+  border-radius: 20%;
+  border-color: #F9FFB1;
+  border: 3px;
+  border-style: groove;
+
+  swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+

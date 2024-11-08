@@ -1,0 +1,39 @@
+// Estilos de la página Not Found
+ion-toolbar {
+  --background: #F9FFB1;
+  --min-height: 56px;
+  --opacity: 1;
+  --padding-bottom: 0px;
+  --padding-end: 5px;
+  --padding-start: 5px;
+  --padding-top: 5px;
+}
+.not-found-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    color: #333;
+  }
+
+  
+  .error-code {
+    font-size: 5rem;
+    font-weight: bold;
+    color: #ff6b6b;
+    margin-bottom: 1rem;
+  }
+  
+  .error-message {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    color: #666;
+  }
+
+  ion-button {
+    --background: #A970FF;
+    
+  }
+  

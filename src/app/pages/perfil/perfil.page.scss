@@ -1,0 +1,82 @@
+// Paleta de colores
+$bg-color: #FCFFD7;
+$soft-pink: #ffc0cb;
+$white-color: #ffffff;
+$deep-purple: #6B1581;
+$hot-pink: #FF5FCF;
+$lavender: #A970FF;
+
+// Fondo 
+ion-content {
+  background-color: $bg-color;
+}
+
+// imagen de perfil
+.cont_img {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .img_profile {
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid $lavender;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// centrando todo
+.centrar {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+
+  ion-label {
+    color: $deep-purple;
+    font-weight: 600;
+    font-size: 1.1em;
+  }
+
+  // icono
+  ion-icon {
+    color: $hot-pink;
+    margin-right: 5px;
+  }
+}
+
+// botones
+ion-button {
+  font-weight: bold;
+  border-radius: 20px;
+  max-width: 170px;
+  width: 100%;
+  padding: 0.5em;
+  color: $white-color;
+
+  &.editar-perfil {
+    background-color: $lavender;
+  }
+
+  &.compartir-perfil {
+    background-color: $hot-pink;
+  }
+
+  
+}
+
+// lista perfil
+ion-list {
+  .centrar {
+    text-align: center;
+    margin-top: 10px;
+
+    // seguidores
+    ion-label {
+      color: $deep-purple;
+      font-size: 0.9em;
+    }
+  }
+}

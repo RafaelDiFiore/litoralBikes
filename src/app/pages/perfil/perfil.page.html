@@ -1,0 +1,23 @@
+<ion-content [fullscreen]="true">
+  <div class="cont_img">
+    <img class="img_profile" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile Picture">
+  </div>
+
+  <ion-list lines="none" class="ion-padding">
+    <div class="centrar">
+      <ion-label>{{ user?.email }}</ion-label>
+    </div>
+    <div class="centrar">
+      <ion-label><ion-icon name="logo-pinterest"></ion-icon>{{ username }}</ion-label>
+    </div>
+    <div class="centrar">
+      <ion-label>3 Seguidores | Siguiendo 0</ion-label>
+    </div>
+    <div class="centrar">
+      <ion-button class="editar-perfil"  color="transparent">Editar Perfil</ion-button>
+    </div>
+    <div class="centrar">
+      <ion-button class="compartir-perfil"  fill="solid" color="transparent">Compartir Perfil</ion-button>
+    </div>
+  </ion-list>
+</ion-content>

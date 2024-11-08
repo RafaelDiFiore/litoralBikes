@@ -1,0 +1,64 @@
+
+<ion-header [translucent]="true" style="background-color: #ffffff;">
+  <ion-toolbar id="ion-toolbar" style="background-color: #f8a2ff;" >
+    
+      <ion-grid>
+        <ion-row>
+          <ion-col></ion-col>
+          <ion-col></ion-col>
+          <ion-col></ion-col>
+          <ion-col>{{ temperatura }}°C</ion-col>
+          <ion-col><img style="filter: drop-shadow(12px 2px 23px black) invert(15%)" [src]= weatherIconUrl alt="Weather Icon"></ion-col>
+          <ion-col>{{ estado }}</ion-col>
+        </ion-row>
+      </ion-grid>
+           
+
+  </ion-toolbar>
+</ion-header>
+
+<!-- Para utilizar las imagenes que se dezlicen instalaremos el pluging(?) Swiper.js <> -->
+
+     <ion-card-subtitle>¿Qué usaras hoy?</ion-card-subtitle>
+  <swiper-container color="transparent"
+  #swiper
+  [pagination]="true"
+  [loop]="true">
+    <swiper-slide *ngFor="let image of images">
+      <img [src]="image.url" alt="Imagen">slide 1
+    </swiper-slide>
+    <swiper-slide>Camisa</swiper-slide>
+    <swiper-slide>Polera</swiper-slide>
+  </swiper-container>
+
+  <!-- Swiper 2  Pantalon/falda-->
+  <swiper-container color="transparent"
+  #swiper
+  [pagination]="true"
+  [loop]="true">
+    <swiper-slide *ngFor="let image of images">
+      <img [src]="image.url" alt="Imagen">slide 1
+    </swiper-slide>
+    <swiper-slide>Pantalon</swiper-slide>
+    <swiper-slide>Falda</swiper-slide>
+  </swiper-container>
+
+  <!-- Swiper 3 Zapato/sapatilla-->
+  <swiper-container color="transparent"
+  #swiper
+  [pagination]="true"
+  [loop]="true">
+    <swiper-slide *ngFor="let image of images">
+      <img [src]="image.url" alt="Imagen">slide 1
+    </swiper-slide>
+    <swiper-slide>Botin</swiper-slide>
+    <swiper-slide>Zapato</swiper-slide>
+  </swiper-container>
+
+<ion-button (click)="uploadImage()" color="transparent">Subir</ion-button>
+
+<ion-content>
+
+  <ion-toast isOpen="true" message="Bienvenido {{ username }}" [duration]="3000" icon="person-circle-outline"></ion-toast>
+
+</ion-content>

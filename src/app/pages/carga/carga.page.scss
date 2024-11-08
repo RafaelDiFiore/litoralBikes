@@ -1,0 +1,90 @@
+// paleta de colores
+$bg-color: #FCFFD7;     
+$soft-pink: #ffc0cb;    
+$white-color: #ffffff;  
+$deep-purple: #6B1581;  
+$hot-pink: #FF5FCF;     
+$lavender: #A970FF;     
+
+// fondo
+ion-content {
+  background-color: #FCFFD7;
+  padding: 1.5em;
+}
+
+ion-toolbar {
+    --background:  #A970FF;
+    --color:  #A970FF;
+}
+ion-header {
+  ion-title {
+      color: #FCFFD7;
+      font-weight: bold;
+      font-size: 1.2em;
+      text-align: center;
+    }
+}
+
+// inputs
+ion-list {
+  padding: 1em;
+  
+  ion-item {
+    --background: white;
+    --color: #6B1581;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+
+    ion-label {
+      color: #6B1581;
+      font-weight: 600;
+    }
+
+    ion-input, ion-textarea, ion-select {
+      color: #6B1581;
+    }
+
+    ion-select-option {
+      color: #6B1581;
+    }
+  }
+}
+
+// botones
+ion-button {
+    align-items: center;
+    font-weight: bold;
+    border-radius: 5px;
+    margin-top: 20px;
+    width: 95%;
+    color: pink;
+    border-color: #FF5FCF;
+    border: #FF5FCF;
+    border-style:inset;
+
+    &.upload {
+        background-color: #FF5FCF;
+    }
+
+    &.camera {
+        background-color: #A970FF;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+    }
+
+    &:hover {
+        opacity: 0.9;
+    }
+}
+
+// foto
+#capturedImage {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin-top: 15px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}

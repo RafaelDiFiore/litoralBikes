@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Subir prenda</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label position="floating">Título</ion-label>
+      <ion-input [(ngModel)]="title" name="title"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Autor</ion-label>
+      <ion-input [(ngModel)]="author" name="author"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Descripción</ion-label>
+      <ion-textarea [(ngModel)]="description" name="description"></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Estado</ion-label>
+      <ion-select [(ngModel)]="status" name="status">
+        <ion-select-option value="public">Pública</ion-select-option>
+        <ion-select-option value="private">Privada</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Etiquetas (separadas por coma)</ion-label>
+      <ion-input [(ngModel)]="tags" name="tags"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input type="file" (change)="onFileSelected($event)" accept="image/*" color="transparent"></ion-input>
+    </ion-item>
+
+    <ion-button expand="full" (click)="uploadImage()" [disabled]="!selectedFile" color="transparent">
+      Subir Imagen
+    </ion-button>
+
+    <ion-button (click)="tomarFoto()" color="transparent">Cámara</ion-button>
+    <img id="capturedImage" style="width: 100%; height: auto;">
+  </ion-list>
+</ion-content>
+
+

@@ -1,0 +1,42 @@
+ion-content {
+  --background: #f0f0f0; /* Un gris muy suave que resalta el logo en blanco y negro */
+}
+
+.list {
+  background-color: rgba(255, 255, 255, 0); /* Fondo completamente transparente */
+  ion-item {
+      --background: transparent; /* Asegura que el fondo sea transparente en temas oscuros o claros */
+  }
+}
+
+ion-input.custom {
+  --background: #ffffff;
+  color: #333333; 
+  --highlight-color-valid: #6aa84f; 
+}
+
+ion-button {
+  height: 50px;
+  --background: #ff9900; 
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.img_logo {
+  margin: 0px;
+  justify-content: center;
+  height: 250px;
+  width: 100%;
+  border-radius: 50%; 
+  max-width: 100%;
+}
+
+h4 {
+  color: #000000; 
+}
+
+h5 {
+  color: #000000; 
+  border-bottom: 2px solid #000000; 
+}

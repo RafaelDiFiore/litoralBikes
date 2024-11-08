@@ -1,0 +1,58 @@
+ion-content {
+  --background: #f0f0f0; /* Un gris suave que se complementa bien con el esquema del logo */
+}
+
+ion-item {
+  color: #333333; /* Un gris oscuro para mantener la legibilidad y profesionalismo */
+  --background: transparent; /* Fondo transparente */
+}
+
+h4 {
+  color: #000000; /* Negro, consistente con el logo */
+  margin: 0;
+  font-size: 22px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  background-color: rgba(255, 255, 255, 0); /* Fondo completamente transparente */
+
+  ion-input {
+      height: 45px;
+      --padding-start: 23px;
+      --background: #e6f7d7; /* Verde claro para mantener la frescura, sin ser demasiado llamativo */
+      --border-radius: 20px;
+      margin-bottom: 10px;
+      color: #333333; /* Texto en gris oscuro para buena legibilidad */
+      font-weight: bold;
+      --padding-end: 40px;
+  }
+}
+
+.img_logo {
+  margin-left: 5px;
+  height: 250px;
+  width: auto;
+  border-radius: 50%; /* Cambié a 50% para suavizar el borde */
+  max-width: 100%;
+}
+
+ion-button {
+  height: 50px;
+  --background: #ff9900; /* Naranja apagado para agregar un toque de energía sin chocar con la paleta general */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+p {
+  color: #000000; /* Negro para alinearse con el logo */
+  font-size: 20px;
+}
+
+a {
+  text-decoration: underline; /* Cambié a 'underline' para dar un estilo más formal y claro a los enlaces */
+}

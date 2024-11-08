@@ -1,0 +1,66 @@
+<ion-content>
+  
+  <ion-list lines="none" class="list ion-padding">
+    
+    <!-- Logo del taller -->
+    <ion-item class="ion-justify-content-center">
+      <img class="img_logo" src="assets/img/Logo.png" alt="Logo Litoral Bikes">
+    </ion-item>
+
+    <!-- Título de inicio de sesión -->
+    <ion-item class="ion-justify-content-left">
+      <h4>Ingresa a tu cuenta</h4>
+    </ion-item>
+
+    <!-- Campo para ingresar el nombre de usuario -->
+    <ion-input 
+       class="custom"
+       type="text"
+       label="Usuario" 
+       label-placement="floating"
+       fill="outline"
+       placeholder="Ingrese su nombre de usuario" 
+       [(ngModel)]="login.usernameOrEmail">
+    </ion-input>
+       
+    <!-- Campo para ingresar la contraseña -->
+    <ion-input 
+      class="custom ion-margin-top"
+      type="password"
+      label="Contraseña"
+      label-placement="floating"
+      fill="outline"
+      placeholder="Ingrese su Contraseña"
+      [(ngModel)]="login.password">
+    </ion-input>
+
+    <!-- Link para restablecer la contraseña -->
+    <ion-item [routerLink]="['/restablecer']">
+      <h4>¿Olvidaste la Contraseña?</h4>
+    </ion-item>
+
+    <!-- Botón para iniciar sesión -->
+    <ion-button 
+      class="ion-justify-content-center" 
+      (click)="ingresar()" 
+      expand="block" 
+      fill="solid" 
+      shape="round">
+      INICIAR SESION
+    </ion-button>
+   
+    <ion-item [routerLink]="['/registrar']">
+      <h5>Registrarse</h5>
+    </ion-item>
+
+    <ion-item class="center">
+      <h4>RRSS</h4>
+    </ion-item>
+
+    <ion-button fill="clear" href="https://www.instagram.com/litoralbikess" target="_blank" size="small">
+      <ion-icon name="logo-instagram" slot="icon-only" style="font-size: 28px; color: #E1306C;"></ion-icon>
+    </ion-button>
+
+  </ion-list>
+  
+</ion-content>

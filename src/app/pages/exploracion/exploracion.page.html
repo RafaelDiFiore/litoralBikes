@@ -1,0 +1,11 @@
+<ion-content class="ion-padding">
+  <div class="pins">
+    <div class="pin" *ngFor="let image of images">
+      <img [src]="image.url" alt="Imagen subida">
+      <ion-card-header>
+        <ion-card-subtitle>{{ image.author }}</ion-card-subtitle>
+        <ion-card-title>{{ image.title }}</ion-card-title>
+      </ion-card-header>
+    </div>
+  </div>
+</ion-content>
