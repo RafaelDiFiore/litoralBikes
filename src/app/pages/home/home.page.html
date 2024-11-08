@@ -1,6 +1,6 @@
 
 <ion-header [translucent]="true" style="background-color: #ffffff;">
-  <ion-toolbar id="ion-toolbar" style="background-color: #f8a2ff;" >
+  <ion-toolbar id="ion-toolbar" style="background-color: #979797;" >
     
       <ion-grid>
         <ion-row>
@@ -17,9 +17,8 @@
   </ion-toolbar>
 </ion-header>
 
-<!-- Para utilizar las imagenes que se dezlicen instalaremos el pluging(?) Swiper.js <> -->
 
-     <ion-card-subtitle>¿Qué usaras hoy?</ion-card-subtitle>
+     <ion-card-subtitle>Novedades</ion-card-subtitle>
   <swiper-container color="transparent"
   #swiper
   [pagination]="true"
@@ -27,11 +26,10 @@
     <swiper-slide *ngFor="let image of images">
       <img [src]="image.url" alt="Imagen">slide 1
     </swiper-slide>
-    <swiper-slide>Camisa</swiper-slide>
-    <swiper-slide>Polera</swiper-slide>
+    <swiper-slide>giant</swiper-slide>
+    <swiper-slide>specialized</swiper-slide>
   </swiper-container>
 
-  <!-- Swiper 2  Pantalon/falda-->
   <swiper-container color="transparent"
   #swiper
   [pagination]="true"
@@ -39,11 +37,11 @@
     <swiper-slide *ngFor="let image of images">
       <img [src]="image.url" alt="Imagen">slide 1
     </swiper-slide>
-    <swiper-slide>Pantalon</swiper-slide>
-    <swiper-slide>Falda</swiper-slide>
+    <swiper-slide>bicicleta1</swiper-slide>
+    <swiper-slide>bicicleta2</swiper-slide>
   </swiper-container>
 
-  <!-- Swiper 3 Zapato/sapatilla-->
+  
   <swiper-container color="transparent"
   #swiper
   [pagination]="true"
@@ -51,11 +49,10 @@
     <swiper-slide *ngFor="let image of images">
       <img [src]="image.url" alt="Imagen">slide 1
     </swiper-slide>
-    <swiper-slide>Botin</swiper-slide>
-    <swiper-slide>Zapato</swiper-slide>
+    <swiper-slide>bicicleta1</swiper-slide>
+    <swiper-slide>bicicleta2</swiper-slide>
   </swiper-container>
 
-<ion-button (click)="uploadImage()" color="transparent">Subir</ion-button>
 
 <ion-content>
 
