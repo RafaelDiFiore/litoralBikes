@@ -12,37 +12,19 @@ export class FirebaseService {
   private storage = getStorage(initializeApp(environment.firebaseConfig));
 
   constructor() {}
+  async addClient(data: any): Promise<void> {
+    try {
+      // Define la referencia de la colección 'clients'
+      const clientsCollection = collection(this.db, 'clients');
+      
+      // Añade un nuevo documento con los datos recibidos
+      await addDoc(clientsCollection, data);
+      console.log('Cliente agregado correctamente');
+    } catch (error) {
+      console.error('Error al agregar el cliente:', error);
+      throw error;
+    }
 
-  async getImages() {
-    const imagesCollection = collection(this.db, 'images');
-    const snapshot = await getDocs(imagesCollection);
-    return snapshot.docs.map(doc => doc.data());
-  }
 
-  async getPublicImages() {
-    const imagesCollection = collection(this.db, 'images');
-    const q = query(imagesCollection, where("status", "==", "public"));
-    const snapshot = await getDocs(q);
-    return snapshot.docs.map(doc => doc.data());
   }
-
-  async uploadImage(file: File, data: any) {
-    const storageRef = ref(this.storage, `images/${file.name}`);
-    
-    // Subir la imagen a Firebase Storage
-    await uploadBytes(storageRef, file);
-    
-    // Obtener la URL pública de la imagen
-    const url = await getDownloadURL(storageRef);
-  
-    // Agrega la URL al objeto de datos
-    const imageData = {
-      ...data,
-      url, // Guardar la URL completa en Firestore
-    };
-  
-    // Guarda los datos en Firestore
-    const docRef = doc(this.db, `images/${file.name}`);
-    await setDoc(docRef, imageData);
   }
-}
