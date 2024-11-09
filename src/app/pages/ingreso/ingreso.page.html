@@ -37,10 +37,19 @@
     </ion-list>
 
 
-    <ion-button expand="full" type="submit" [disabled]="!ingresoForm.form.valid" class="ingreso-btn">
+
+    <ion-button expand="full" type="submit"  class="ingreso-btn">
       Ingresar Cliente
     </ion-button>
+
+    <ion-button (click)="saveQRCode()" expand="full" color="primary" class="qr-btn">Guardar Código QR
+
+    </ion-button>
+     
   </form>
+
+ 
+
 
   <!-- Mostrar la imagen del código QR -->
   <img *ngIf="qrCodeUrl" [src]="qrCodeUrl" alt="QR Code">
