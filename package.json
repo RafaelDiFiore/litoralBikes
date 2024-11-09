@@ -1,5 +1,5 @@
 {
-  "name": "NEW_DRESS",
+  "name": "litoralBikes",
   "version": "0.0.1",
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
@@ -22,7 +22,6 @@
     "@angular/platform-browser": "^18.0.0",
     "@angular/platform-browser-dynamic": "^18.0.0",
     "@angular/router": "^18.0.0",
-    "@capacitor-community/barcode-scanner": "^4.0.1",
     "@capacitor/app": "6.0.1",
     "@capacitor/camera": "^6.1.0",
     "@capacitor/core": "^6.1.2",
@@ -34,6 +33,7 @@
     "@ionic/storage-angular": "^4.0.0",
     "firebase": "^11.0.1",
     "ionicons": "^7.0.0",
+    "jsqr": "^1.4.0",
     "rxjs": "~7.8.0",
     "swiper": "^11.1.14",
     "tslib": "^2.3.0",

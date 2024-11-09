@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { AlertController } from '@ionic/angular';
 import { FirebaseService } from 'src/app/services/firebase.service';
-
+import { Camera, CameraResultType } from '@capacitor/camera';
+import jsQR from 'jsqr';
 
 @Component({
   selector: 'app-carga',
@@ -12,50 +11,51 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 })
 
 export class CargaPage {
-  selectedFile: File | null = null;
-  title = '';
-  author = '';
-  description = '';
-  status = 'public'; // o 'private'
-  tags: string = '';
+  title: string = '';
+  author: string = '';
+  description: string = '';
+  status: string = '';
 
-  constructor(private firebaseService: FirebaseService, private alertController: AlertController) { }
+  constructor() {}
 
-  ngOnInit() {}
-
-
-
-  onFileSelected(event: Event) {
-    const target = event.target as HTMLInputElement;
-    if (target.files && target.files.length) {
-      this.selectedFile = target.files[0];
-    }
-  }
-
-
-
-
-  async scanQR() {
+  async scanQrCode() {
     try {
-      // Pide permiso para acceder a la cámara
-      const status = await BarcodeScanner.checkPermission({ force: true });
+      // Captura la imagen
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.DataUrl,
+      });
 
-      if (status.granted) {
-        BarcodeScanner.hideBackground();
+      // Crea un elemento canvas para procesar la imagen
+      const img = new Image();
+      img.src = image.dataUrl!;
 
-        const result = await BarcodeScanner.startScan(); // Te devolverá el resultado del escaneo
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const context = canvas.getContext('2d');
+        context?.drawImage(img, 0, 0, img.width, img.height);
 
-        BarcodeScanner.showBackground();
+        // Decodifica el QR
+        const imageData = context?.getImageData(0, 0, canvas.width, canvas.height);
+        if (imageData) {
+          const qrCodeData = jsQR(imageData.data, imageData.width, imageData.height);
 
-        if (result?.hasContent) {
-          console.log('Contenido del QR:', result.content);
-         
+          if (qrCodeData) {
+            const data = JSON.parse(qrCodeData.data);
+            this.title = data.nombre || '';
+            this.author = data.bicicleta || '';
+            this.description = data.servicio || '';
+            this.status = data.estado || '';
+          } else {
+            console.log("No se pudo leer el código QR.");
+          }
         }
-      } else {
-        console.log('Permiso no concedido');
-      }
+      };
     } catch (error) {
-      console.error('Error al escanear el QR:', error);
+      console.error("Error al capturar o procesar el código QR:", error);
     }
   }
 }

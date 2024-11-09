@@ -35,7 +35,7 @@ const routes: Routes = [
   {
   path: '',
   component: BarraComponent,//incorporacion del componente
-  canActivate: [authGuard],
+  //canActivate: [authGuard],
   children: [
     //PAGINA DE INICIO DONDE SALE RECOMENDACIONES
     {

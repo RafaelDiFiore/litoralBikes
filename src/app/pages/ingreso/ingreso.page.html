@@ -41,4 +41,7 @@
       Ingresar Cliente
     </ion-button>
   </form>
+
+  <!-- Mostrar la imagen del código QR -->
+  <img *ngIf="qrCodeUrl" [src]="qrCodeUrl" alt="QR Code">
 </ion-content>
