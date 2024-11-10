@@ -86,7 +86,7 @@ export class IngresoPage {
     }
   }
 
-  // Método para limpiar los campos del formulario
+  
   resetFields() {
     this.nombre = '';
     this.bicicleta = '';
