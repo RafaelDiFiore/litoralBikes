@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
-import { HttpClient } from '@angular/common/http'; // Importa HttpClient para hacer la solicitud a la URL del QR
-import { AlertController } from '@ionic/angular'; // Importa AlertController para mostrar las alertas
+import { HttpClient } from '@angular/common/http';
+import { AlertController } from '@ionic/angular';
+import { Preferences } from '@capacitor/preferences';
 
 @Component({
   selector: 'app-ingreso',
@@ -15,15 +16,23 @@ export class IngresoPage {
   estado: string = '';
   qrCodeUrl: string = '';
 
-  constructor(private http: HttpClient, private alertController: AlertController) {}
+  constructor(private http: HttpClient, private alertController: AlertController) {
+    this.loadClientData(); // Cargar datos persistentes si existen
+  }
 
-  submitForm() {
+  async submitForm() {
     const data = {
       nombre: this.nombre,
       bicicleta: this.bicicleta,
       servicio: this.servicio,
       estado: this.estado
     };
+
+    // Guardar datos del cliente en almacenamiento persistente
+    await Preferences.set({
+      key: 'cliente',
+      value: JSON.stringify(data),
+    });
 
     // Codifica el JSON a una cadena URL
     const jsonData = encodeURIComponent(JSON.stringify(data));
@@ -70,7 +79,7 @@ export class IngresoPage {
               });
 
               console.log('QR Code guardado como imagen JPG.');
-              alert('El código QR ha sido guardado como una imagen en tu dispositivo.');
+              this.presentAlert('Éxito', '', 'El código QR ha sido guardado como una imagen en tu dispositivo.');
 
               // Limpiar los campos del formulario y la URL del QR
               this.resetFields();
@@ -79,14 +88,25 @@ export class IngresoPage {
         }
       } catch (error) {
         console.error('Error al generar o guardar el QR:', error);
-        alert('No se pudo guardar la imagen del código QR.');
+        this.presentAlert('Error', '', 'No se pudo guardar la imagen del código QR.');
       }
     } else {
-      alert('Primero debes generar el código QR.');
+      this.presentAlert('Aviso', '', 'Primero debes generar el código QR.');
     }
   }
 
-  
+  async loadClientData() {
+    // Cargar los datos almacenados si existen
+    const { value } = await Preferences.get({ key: 'cliente' });
+    if (value) {
+      const data = JSON.parse(value);
+      this.nombre = data.nombre;
+      this.bicicleta = data.bicicleta;
+      this.servicio = data.servicio;
+      this.estado = data.estado;
+    }
+  }
+
   resetFields() {
     this.nombre = '';
     this.bicicleta = '';

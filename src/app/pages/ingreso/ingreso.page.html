@@ -7,25 +7,22 @@
 <ion-content>
   <form (ngSubmit)="submitForm()" #ingresoForm="ngForm">
     <ion-list>
-     
+      
       <ion-item>
         <ion-label position="floating">Nombre</ion-label>
         <ion-input type="text" name="nombre" [(ngModel)]="nombre" required></ion-input>
       </ion-item>
-
   
       <ion-item>
         <ion-label position="floating">Bicicleta</ion-label>
         <ion-input type="text" name="bicicleta" [(ngModel)]="bicicleta" required></ion-input>
       </ion-item>
-
-      
+  
       <ion-item>
         <ion-label position="floating">Servicio</ion-label>
         <ion-input type="text" name="servicio" [(ngModel)]="servicio" required></ion-input>
       </ion-item>
-
- 
+  
       <ion-item>
         <ion-label position="floating">Estado</ion-label>
         <ion-select name="estado" [(ngModel)]="estado" required>
@@ -36,20 +33,13 @@
       </ion-item>
     </ion-list>
 
-
-
     <ion-button expand="full" type="submit"  class="ingreso-btn">
       Ingresar Cliente
     </ion-button>
 
     <ion-button (click)="saveQRCode()" expand="full" color="primary" class="qr-btn">Guardar Código QR
-
     </ion-button>
-     
   </form>
-
- 
-
 
   <!-- Mostrar la imagen del código QR -->
   <img *ngIf="qrCodeUrl" [src]="qrCodeUrl" alt="QR Code">

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { getAuth, sendPasswordResetEmail ,onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserLocalPersistence } from "firebase/auth";
+import { getAuth, sendPasswordResetEmail, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserLocalPersistence } from "firebase/auth";
 import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
+import { Router } from '@angular/router';
+import { Preferences } from '@capacitor/preferences';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +14,8 @@ export class AuthService {
   private auth = getAuth();
   private db = getFirestore();
 
-  constructor() {
-    this.loadUserFromLocalStorage(); // Cargar el usuario al iniciar el servicio
+  constructor(private router: Router) {
+    this.loadUserFromPreferences(); // Cargar el usuario al iniciar el servicio
 
     setPersistence(this.auth, browserLocalPersistence)
       .then(() => {
@@ -21,6 +23,9 @@ export class AuthService {
         onAuthStateChanged(this.auth, (user) => {
           if (user) {
             console.log("Usuario autenticado:", user);
+            this.user = user;
+            this.username = user.displayName || null; // Actualiza el nombre de usuario si existe en el displayName
+            this.saveUserToPreferences(); // Guarda el usuario en Preferencias para mantener la sesión
           } else {
             console.log("No hay usuario autenticado");
           }
@@ -31,6 +36,7 @@ export class AuthService {
       });
   }
 
+  // Registro de usuario
   async registerUser(username: string, email: string, password: string) {
     try {
       // Verifica si el nombre de usuario ya existe
@@ -52,10 +58,11 @@ export class AuthService {
         username: username // Guarda el nombre de usuario
       });
 
-      // Almacena el nombre de usuario y el usuario en localStorage
+      // Almacena el nombre de usuario y el usuario en Preferences
       this.username = username;
       this.user = userCredential.user;
-      localStorage.setItem('user', JSON.stringify(this.user));
+      await this.saveUserToPreferences();
+      
       return userCredential;
     } catch (error) {
       console.error("Error en el registro:", error);
@@ -63,6 +70,7 @@ export class AuthService {
     }
   }
 
+  // Inicio de sesión
   async login(usernameOrEmail: string, password: string): Promise<void> {
     let email: string | null = null;
 
@@ -87,7 +95,8 @@ export class AuthService {
       return signInWithEmailAndPassword(this.auth, email, password)
         .then((userCredential) => {
           this.user = userCredential.user;
-          localStorage.setItem('user', JSON.stringify(this.user)); // Guardar en localStorage
+          this.username = usernameOrEmail;
+          this.saveUserToPreferences(); // Guardar en Preferences
         })
         .catch((error) => {
           console.error("Error de inicio de sesión:", error);
@@ -98,27 +107,42 @@ export class AuthService {
     }
   }
 
+  // Método para verificar si un email es válido
   private isValidEmail(email: string): boolean {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
   }
 
-  private loadUserFromLocalStorage(): void {
-    const user = localStorage.getItem('user');
-    if (user) {
-      this.user = JSON.parse(user); // Recuperar el usuario del localStorage
-      this.username = this.user.username; // Cargar el nombre de usuario si está disponible
+  // Cargar usuario desde Preferences
+  private async loadUserFromPreferences(): Promise<void> {
+    const user = await Preferences.get({ key: 'user' });
+    if (user.value) {
+      this.user = JSON.parse(user.value); // Recuperar el usuario del Preferences
+      this.username = this.user.displayName || this.user.username || null; // Cargar el nombre de usuario si está disponible
     }
   }
 
+  // Guardar usuario en Preferences
+  private async saveUserToPreferences(): Promise<void> {
+    if (this.user) {
+      await Preferences.set({
+        key: 'user',
+        value: JSON.stringify(this.user)
+      });
+    }
+  }
+
+  // Método para obtener el usuario actual
   getUser() {
-    return this.user; // Método para obtener el usuario
+    return this.user;
   }
 
+  // Método para obtener el nombre de usuario
   getUsername(): string | null {
-    return this.username; // Devuelve el nombre de usuario
+    return this.username;
   }
 
+  // Restablecer contraseña
   async resetPassword(email: string): Promise<void> {
     try {
       await sendPasswordResetEmail(this.auth, email);
@@ -128,5 +152,4 @@ export class AuthService {
       throw error;
     }
   }
-
 }
