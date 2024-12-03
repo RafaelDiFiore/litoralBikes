@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
-import { HttpClient } from '@angular/common/http';
 import { AlertController } from '@ionic/angular';
-import { Preferences } from '@capacitor/preferences';
+import { Firestore, collection, addDoc } from '@angular/fire/firestore';
+import { HttpClient } from '@angular/common/http';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 
 @Component({
   selector: 'app-ingreso',
@@ -16,60 +16,67 @@ export class IngresoPage {
   estado: string = '';
   qrCodeUrl: string = '';
 
-  constructor(private http: HttpClient, private alertController: AlertController) {
-    this.loadClientData(); // Cargar datos persistentes si existen
-  }
+  constructor(
+    private firestore: Firestore,
+    private alertController: AlertController,
+    private http: HttpClient
+  ) {}
 
   async submitForm() {
-    const data = {
+    // Datos del cliente
+    const clienteData = {
       nombre: this.nombre,
       bicicleta: this.bicicleta,
       servicio: this.servicio,
-      estado: this.estado
+      estado: this.estado,
+      fecha: new Date().toISOString(), // Fecha del ingreso
     };
 
-    // Guardar datos del cliente en almacenamiento persistente
-    await Preferences.set({
-      key: 'cliente',
-      value: JSON.stringify(data),
-    });
+    try {
+      // Guardar en Firestore en la colección 'clientes'
+      const dbInstance = collection(this.firestore, 'clientes');
+      const docRef = await addDoc(dbInstance, clienteData);
 
-    // Codifica el JSON a una cadena URL
-    const jsonData = encodeURIComponent(JSON.stringify(data));
+      // Generar código QR con el ID del documento y los datos
+      const jsonData = encodeURIComponent(
+        JSON.stringify({ id: docRef.id, ...clienteData })
+      );
+      this.qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${jsonData}&size=200x200`;
 
-    // Genera la URL de la imagen QR con los datos del JSON
-    this.qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${jsonData}&size=200x200`;
+      // Mostrar alerta de éxito
+      this.presentAlert(
+        'Cliente agregado',
+        '',
+        'El cliente ha sido registrado correctamente en la base de datos y el código QR generado.'
+      );
 
-    // Mostrar el mensaje de confirmación de cliente agregado
-    this.presentAlert('Cliente agregado exitosamente', '', 'El cliente ha sido agregado a la base de datos y el código QR ha sido generado.');
-  }
-
-  // Método para mostrar alertas
-  async presentAlert(titulo: string, subTitulo: string, mensaje: string) {
-    const alert = await this.alertController.create({
-      header: titulo,
-      subHeader: subTitulo,
-      message: mensaje,
-      buttons: ['OK'],
-    });
-    await alert.present();
+      // Limpiar campos después de guardar
+      this.resetFields();
+    } catch (error) {
+      console.error('Error al guardar cliente:', error);
+      this.presentAlert(
+        'Error',
+        '',
+        'Ocurrió un error al guardar el cliente. Inténtalo nuevamente.'
+      );
+    }
   }
 
   async saveQRCode() {
     if (this.qrCodeUrl) {
       try {
-        // Descarga la imagen del QR desde la URL
-        const blob = await this.http.get(this.qrCodeUrl, { responseType: 'blob' }).toPromise();
-        
+        // Descargar la imagen del QR desde la URL
+        const blob = await this.http
+          .get(this.qrCodeUrl, { responseType: 'blob' })
+          .toPromise();
+
         if (blob) {
-          // Convierte el blob a base64
           const reader = new FileReader();
           reader.readAsDataURL(blob);
           reader.onloadend = async () => {
             const base64Data = reader.result?.toString().split(',')[1];
-
             if (base64Data) {
-              // Guarda la imagen como archivo en el dispositivo
+              // Guardar el QR como archivo en el dispositivo
               const fileName = `qr_code_${new Date().getTime()}.jpg`;
               await Filesystem.writeFile({
                 path: fileName,
@@ -78,33 +85,35 @@ export class IngresoPage {
                 encoding: Encoding.UTF8,
               });
 
-              console.log('QR Code guardado como imagen JPG.');
-              this.presentAlert('Éxito', '', 'El código QR ha sido guardado como una imagen en tu dispositivo.');
-
-              // Limpiar los campos del formulario y la URL del QR
-              this.resetFields();
+              this.presentAlert(
+                'Éxito',
+                '',
+                'El código QR ha sido guardado como imagen en tu dispositivo.'
+              );
             }
           };
         }
       } catch (error) {
-        console.error('Error al generar o guardar el QR:', error);
-        this.presentAlert('Error', '', 'No se pudo guardar la imagen del código QR.');
+        console.error('Error al guardar QR:', error);
+        this.presentAlert(
+          'Error',
+          '',
+          'No se pudo guardar el código QR. Por favor, inténtalo nuevamente.'
+        );
       }
     } else {
       this.presentAlert('Aviso', '', 'Primero debes generar el código QR.');
     }
   }
 
-  async loadClientData() {
-    // Cargar los datos almacenados si existen
-    const { value } = await Preferences.get({ key: 'cliente' });
-    if (value) {
-      const data = JSON.parse(value);
-      this.nombre = data.nombre;
-      this.bicicleta = data.bicicleta;
-      this.servicio = data.servicio;
-      this.estado = data.estado;
-    }
+  async presentAlert(header: string, subHeader: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      subHeader,
+      message,
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 
   resetFields() {

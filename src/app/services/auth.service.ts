@@ -1,20 +1,30 @@
-import { Injectable } from '@angular/core';
-import { getAuth, sendPasswordResetEmail, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserLocalPersistence } from "firebase/auth";
-import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
+import { Injectable, Inject } from '@angular/core';
+import {
+  Auth,
+  getAuth,
+  sendPasswordResetEmail,
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  setPersistence,
+  browserLocalPersistence,
+} from 'firebase/auth';
+import { Firestore, getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
 import { Router } from '@angular/router';
 import { Preferences } from '@capacitor/preferences';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   user: any; // Variable para almacenar la información del usuario
   private username: string | null = null; // Para almacenar el nombre de usuario
 
-  private auth = getAuth();
-  private db = getFirestore();
-
-  constructor(private router: Router) {
+  constructor(
+    @Inject('FIREBASE_AUTH') private auth: Auth,
+    @Inject('FIRESTORE') private db: Firestore,
+    private router: Router
+  ) {
     this.loadUserFromPreferences(); // Cargar el usuario al iniciar el servicio
 
     setPersistence(this.auth, browserLocalPersistence)
@@ -22,17 +32,17 @@ export class AuthService {
         // La persistencia se ha configurado correctamente
         onAuthStateChanged(this.auth, (user) => {
           if (user) {
-            console.log("Usuario autenticado:", user);
+            console.log('Usuario autenticado:', user);
             this.user = user;
             this.username = user.displayName || null; // Actualiza el nombre de usuario si existe en el displayName
             this.saveUserToPreferences(); // Guarda el usuario en Preferencias para mantener la sesión
           } else {
-            console.log("No hay usuario autenticado");
+            console.log('No hay usuario autenticado');
           }
         });
       })
       .catch((error) => {
-        console.error("Error al establecer la persistencia:", error);
+        console.error('Error al establecer la persistencia:', error);
       });
   }
 
@@ -53,19 +63,19 @@ export class AuthService {
 
       // Guarda los datos del usuario en Firestore usando el nombre de usuario como clave
       await setDoc(doc(this.db, 'users', username), {
-        uid: uid,  // Guarda el uid para futuras referencias
+        uid: uid, // Guarda el uid para futuras referencias
         email: email,
-        username: username // Guarda el nombre de usuario
+        username: username, // Guarda el nombre de usuario
       });
 
       // Almacena el nombre de usuario y el usuario en Preferences
       this.username = username;
       this.user = userCredential.user;
       await this.saveUserToPreferences();
-      
+
       return userCredential;
     } catch (error) {
-      console.error("Error en el registro:", error);
+      console.error('Error en el registro:', error);
       throw error;
     }
   }
@@ -83,11 +93,11 @@ export class AuthService {
       const userDoc = await getDoc(userRef);
 
       if (userDoc.exists()) {
-        email = userDoc.data()?.["email"];
+        email = userDoc.data()?.['email'];
         this.username = usernameOrEmail; // Asigna el nombre de usuario
       } else {
-        console.error("Usuario no encontrado");
-        throw new Error("Usuario no encontrado");
+        console.error('Usuario no encontrado');
+        throw new Error('Usuario no encontrado');
       }
     }
 
@@ -99,11 +109,11 @@ export class AuthService {
           this.saveUserToPreferences(); // Guardar en Preferences
         })
         .catch((error) => {
-          console.error("Error de inicio de sesión:", error);
+          console.error('Error de inicio de sesión:', error);
           throw error;
         });
     } else {
-      throw new Error("Email no encontrado");
+      throw new Error('Email no encontrado');
     }
   }
 
@@ -127,7 +137,7 @@ export class AuthService {
     if (this.user) {
       await Preferences.set({
         key: 'user',
-        value: JSON.stringify(this.user)
+        value: JSON.stringify(this.user),
       });
     }
   }
@@ -146,9 +156,9 @@ export class AuthService {
   async resetPassword(email: string): Promise<void> {
     try {
       await sendPasswordResetEmail(this.auth, email);
-      console.log("Correo de restablecimiento de contraseña enviado a:", email);
+      console.log('Correo de restablecimiento de contraseña enviado a:', email);
     } catch (error) {
-      console.error("Error al enviar el correo de restablecimiento de contraseña:", error);
+      console.error('Error al enviar el correo de restablecimiento de contraseña:', error);
       throw error;
     }
   }
